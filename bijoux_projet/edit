@@ -1,0 +1,74 @@
+<?php
+
+require 'db.php';
+require 'functions.php';
+
+$id=$_GET['id'];
+
+$product=getOne($pdo,$id);
+
+if(isset($_POST['update'])){
+
+updateProduct(
+
+$pdo,
+
+$id,
+
+$_POST['name'],
+$_POST['price'],
+$_POST['quantity'],
+$_POST['categories']
+
+);
+
+header("Location:index.php");
+
+}
+
+?>
+<form method="POST">
+
+<input
+value="<?=$product['name']?>"
+name="name">
+
+<input
+value="<?=$product['price']?>"
+name="price">
+
+<input
+value="<?=$product['quantity']?>"
+name="quantity">
+
+
+<select name="categories">
+
+<?php
+
+$res=$pdo->query(
+"SELECT * FROM categories"
+);
+
+while($c=$res->fetch()):
+
+?>
+
+<option
+value="<?=$c['id']?>">
+
+<?=$c['nom']?>
+
+</option>
+
+<?php endwhile;?>
+
+</select>
+
+<button name="update">
+
+Modifier
+
+</button>
+
+</form>
